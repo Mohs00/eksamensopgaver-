@@ -1,28 +1,33 @@
-import java.io.IOException;
-import java.nio.file.Files;
-import java.nio.file.Paths;
-import java.util.Arrays;
-import java.util.List;
+import java.util.ArrayList;
+import java.util.Collections;
 
 public class Main {
     public static void main(String[] args) {
-        // Navne der skal anonymiseres
-        List<String> names = Arrays.asList("Anders", "Katrine", "Joakim", "Stine");
+        // Opretter User-objekter med forskellige konstruktører
+        User u1 = new User("Anders", "abc123");
+        User u2 = new User("Bo", "pass123", "bo@email.dk");
+        User u3 = new User("Clara", "123456", "clara@email.dk", "12345678");
+        User u4 = new User("david", "kode"); // Skal vise fejl (starter ikke med stort)
 
-        try {
-            // Læs hele filen som én tekststreng
-            String originalText = new String(Files.readAllBytes(Paths.get("tekst.txt")));
+        // Vi Udskriver brugere
+        System.out.println("\nBruger info:");
+        System.out.println(u1);
+        System.out.println(u2);
+        System.out.println(u3);
+        System.out.println(u4); // måske ikke valid
 
-            // Kald StringHandler
-            StringHandler handler = new StringHandler();
-            String anonymizedText = handler.replaceText(originalText, names);
+        // Opretter en liste og sorter den
+        ArrayList<User> userList = new ArrayList<>();
+        userList.add(u1);
+        userList.add(u2);
+        userList.add(u3);
 
-            // Udskriv resultat
-            System.out.println("Anonymiseret tekst:\n");
-            System.out.println(anonymizedText);
+        // Sorter alfabetisk efter navn
+        userList.sort((a, b) -> a.getName().compareToIgnoreCase(b.getName()));
 
-        } catch (IOException e) {
-            System.out.println("Fejl ved læsning af fil: " + e.getMessage());
+        System.out.println("\nSorterede brugere:");
+        for (User u : userList) {
+            System.out.println(u.getName());
         }
     }
 }
